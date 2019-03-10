@@ -1,0 +1,46 @@
+{
+  "name": "trader-api",
+  "version": "3.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "nyc --reporter=html --reporter=clover --reporter=text mocha test/**/*.js",
+    "posttest": "npm run eslint",
+    "eslint": "eslint .",
+    "selenium": "node node_modules/http-server/bin/http-server -p 8082 app.js",
+    "production": "NODE_ENV='production' node app.js",
+    "test1": "docker-compose run node_alpine npm test",
+    "test2": "docker-compose run node_10_alpine npm test",
+    "test3": "docker-compose run node_8_alpine npm test",
+    "test4": "docker-compose run node_6_alpine npm test",
+    "report-coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "report-codecov": "nyc report --reporter=lcov > coverage.lcov && codecov",
+    "mongo": "node db/mongodb/src/server.js"
+  },
+  "author": "Eric Johansson",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "codacy-coverage": "^3.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongodb": "^3.1.13",
+    "morgan": "^1.9.1",
+    "sqlite3": "^4.0.6"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "codecov": "^3.1.0",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.13.0",
+    "eslint-plugin-react": "^7.12.4",
+    "javascript-style-guide": "^0.9.10",
+    "mocha": "^5.2.0",
+    "nyc": "^13.2.0",
+    "selenium-webdriver": "^3.6.0",
+    "http-server": "^0.11.1"
+  }
+}

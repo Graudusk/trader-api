@@ -1,0 +1,33 @@
+language: node_js
+
+node_js:
+    - "node"
+    - "10"
+    - "8"
+    - "6"
+
+sudo: false
+
+env:
+    - JWT_SECRET="=)wl3k520g9s<onk02354lk<g09u6OLKW0TWA9Y505OSEIRGKHelkrnh"
+
+
+git:
+    submodules: false
+
+before_script:
+    - npm install
+
+
+services:
+    - sqlite3
+
+before_install:
+    - sqlite3 db/test.sqlite < db/migrate.sql
+
+script:
+    - npm test
+
+after_success:
+    - npm run report-coveralls
+    - npm run report-codecov

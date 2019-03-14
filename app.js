@@ -7,7 +7,7 @@ const register = require('./routes/register');
 const login = require('./routes/login');
 const balance = require('./routes/balance');
 const item = require('./routes/item');
-const port = 1337;
+const port = 1338;
 // const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chat";
 const bodyParser = require("body-parser");
 

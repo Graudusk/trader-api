@@ -5,6 +5,8 @@ const app = express();
 const index = require('./routes/index');
 const register = require('./routes/register');
 const login = require('./routes/login');
+const balance = require('./routes/balance');
+const item = require('./routes/item');
 const port = 1337;
 // const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chat";
 const bodyParser = require("body-parser");
@@ -26,6 +28,8 @@ app.use((req, res, next) => {
 app.use('/', index);
 app.use('/register', register);
 app.use('/login', login);
+app.use('/balance', balance);
+app.use('/item', item);
 
 app.use((req, res, next) => {
     var err = new Error("Not Found");
@@ -56,7 +60,6 @@ const server = app.listen(port, () => {
     console.log(`Server is listening on ${port}`);
     // console.log(`DSN is: ${dsn}`);
 });
-
 // const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 module.exports = server;

@@ -6,7 +6,7 @@ const db = require('../db/database');
 const bodyParser = require("body-parser");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const reports = require('../models/reports');
+const trader = require('../models/trader');
 const cors = require('cors');
 
 router.use(bodyParser.json()); // for parsing application/json
@@ -25,7 +25,7 @@ router.post("/", (req, res) => {
         body.email,
         (err, row) => {
             if (err) {
-                return reports.returnError(res, err, "/login", "Database error");
+                return trader.returnError(res, err, "/login", "Database error");
             }
 
             if (row && row.password) {
@@ -58,7 +58,7 @@ router.post("/", (req, res) => {
                     }
                 });
             } else {
-                return reports.returnError(
+                return trader.returnError(
                     res,
                     {
                         message: "Wrong username or password"

@@ -6,7 +6,7 @@ const db = require('../db/database');
 const bodyParser = require("body-parser");
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
-const reports = require('../models/reports');
+const trader = require('../models/trader');
 const saltRounds = 10;
 
 router.use(bodyParser.json()); // for parsing application/json
@@ -24,7 +24,7 @@ router.post("/", (req, res) => {
             hash,
             (err) => {
                 if (err) {
-                    return reports.returnError(res, err, "/register", "Database error");
+                    return trader.returnError(res, err, "/register", "Database error");
                 }
 
                 var message = {

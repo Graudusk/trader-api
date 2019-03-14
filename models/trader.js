@@ -95,7 +95,7 @@ module.exports = (function () {
                 body.quantity,
                 (err) => {
                     if (err) return returnError(res, err, "/item/buy", "Database error");
-            }).get("SELECT * FROM users WHERE id = ?;", body.user, (err, row) => {
+            }).get("SELECT balance FROM users WHERE id = ?;", body.user, (err, row) => {
                 if (err) return returnError(res, err, "/item/buy", "Database error");
                 res.status(201).json({ data: body, row: row });
             });

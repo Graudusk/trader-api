@@ -7,6 +7,7 @@ const register = require('./routes/register');
 const login = require('./routes/login');
 const balance = require('./routes/balance');
 const item = require('./routes/item');
+const user = require('./routes/user');
 const port = 1338;
 // const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chat";
 const bodyParser = require("body-parser");
@@ -30,6 +31,7 @@ app.use('/register', register);
 app.use('/login', login);
 app.use('/balance', balance);
 app.use('/item', item);
+app.use('/user', user);
 
 app.use((req, res, next) => {
     var err = new Error("Not Found");

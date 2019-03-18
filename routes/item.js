@@ -23,6 +23,14 @@ function checkToken(req, res, next) {
     });
 }
 
+router.get("/details/:id",
+    (req, res, next) => checkToken(req, res, next),
+    (req, res) => trader.getItemDetails(res, req.params.id));
+
+router.get("/all",
+    (req, res, next) => checkToken(req, res, next),
+    (req, res) => trader.getItems(res));
+
 router.post("/buy",
     (req, res, next) => checkToken(req, res, next),
     (req, res) => trader.buyItem(res, req.body));

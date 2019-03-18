@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
             if (row && row.password) {
                 bcrypt.compare(body.password, row.password, function(e, result) {
                     if (result) {
-                        const payload = { email: row.email };
+                        const payload = { email: row.email, id: row.id };
                         const secret = process.env.JWT_SECRET;
 
                         // console.log(secret);

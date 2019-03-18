@@ -112,10 +112,29 @@ module.exports = (function () {
         });
     }
 
+    function getItems(res) {
+        db.all("SELECT * FROM items;",
+        (err, row) => {
+            if (err) return returnError(res, err, "items/all", "Database error");
+            res.status(201).json({ data: row });
+        });
+    }
+
+    function getItemDetails(res, id) {
+        db.get("SELECT * FROM items WHERE id = ?;",
+        id,
+        (err, row) => {
+            if (err) return returnError(res, err, "items/all", "Database error");
+            res.status(201).json({ data: row });
+        });
+    }
+
     return {
         buyItem: buyItem,
         sellItem: sellItem,
         addMoney: addMoney,
-        returnError: returnError
+        returnError: returnError,
+        getItems: getItems,
+        getItemDetails: getItemDetails
     };
 }());

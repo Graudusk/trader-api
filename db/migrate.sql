@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY NOT NULL,
     email VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     password VARCHAR(60) NOT NULL,
     balance INT(20),
     UNIQUE(email)
@@ -25,5 +26,5 @@ CREATE TABLE IF NOT EXISTS stockpile (
 );
 
 
-INSERT INTO users (email, password, balance) VALUES ("test@test.com", "$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy", "12001");
+INSERT INTO users (email, name, password, balance) VALUES ("test@test.com", "Sven Svensson",  "$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy", "12001");
 INSERT INTO items (name, quantity, manufacturer, price) VALUES ("Macbook", "200", "Apple", "1200");

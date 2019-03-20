@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "nyc --reporter=html --reporter=clover --reporter=text mocha test/**/*.js",
     "posttest": "npm run eslint",
     "eslint": "eslint .",
@@ -37,10 +38,11 @@
     "coveralls": "^3.0.2",
     "eslint": "^5.13.0",
     "eslint-plugin-react": "^7.12.4",
+    "http-server": "^0.11.1",
     "javascript-style-guide": "^0.9.10",
     "mocha": "^5.2.0",
+    "nodemon": "^1.18.10",
     "nyc": "^13.2.0",
-    "selenium-webdriver": "^3.6.0",
-    "http-server": "^0.11.1"
+    "selenium-webdriver": "^3.6.0"
   }
 }

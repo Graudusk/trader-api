@@ -58,22 +58,26 @@ module.exports = (function () {
         let itemQuantity;
         let itemPrice;
 
-        db.serialize(() => {
-            db.get("Select balance FROM users WHERE id = ?", body.user, (err, row) => {
-                if (err) return returnError(res, err, "/item/buy", "Database error");
-                userBalance = row.balance;
-            }).get("Select quantity, price FROM items WHERE id = ?", body.item, (err, row) => {
-                if (err) return returnError(res, err, "/item/buy", "Database error");
-                itemQuantity = row.quantity;
-                itemPrice = row.price;
+        if (body.quantity > 0) {
+            db.serialize(() => {
+                db.get("Select balance FROM users WHERE id = ?", body.user, (err, row) => {
+                    if (err) return returnError(res, err, "/item/buy", "Database error");
+                    userBalance = row.balance;
+                }).get("Select quantity, price FROM items WHERE id = ?", body.item, (err, row) => {
+                    if (err) return returnError(res, err, "/item/buy", "Database error");
+                    itemQuantity = row.quantity;
+                    itemPrice = row.price;
 
-                if (userBalance - (itemPrice * body.quantity) > 0 && itemQuantity - body.quantity > 0) {
-                    updateStockpile(res, body, itemPrice);
-                } else {
-                    return returnError(res, {message: "Insufficient funds for purchase."}, "/item/buy", "User error");
-                }
+                    if (userBalance - (itemPrice * body.quantity) > 0 && itemQuantity - body.quantity > 0) {
+                        updateStockpile(res, body, itemPrice);
+                    } else {
+                        return returnError(res, {message: "Insufficient funds for purchase."}, "/item/buy", "User error");
+                    }
+                });
             });
-        });
+        } else {
+            return returnError(res, {message: "Zero quantity given."}, "/item/buy", "User error");
+        }
     }
 
     function updateStockpile(res, body, itemPrice) {

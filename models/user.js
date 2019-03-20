@@ -16,9 +16,10 @@ module.exports = (function () {
     }
 
     function getUserDetails(res, id) {
-        db.get("SELECT * FROM users WHERE id = ?;",
+        db.get("SELECT users.*, COUNT(stockpile.id) AS stock FROM users LEFT JOIN stockpile ON stockpile.user = users.id WHERE users.id = ?;",
         id,
         (err, row) => {
+            console.log(row)
             if (err) return returnError(res, err, "/user", "Database error");
             res.status(200).json({ data: row });
         });

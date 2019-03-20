@@ -27,4 +27,9 @@ CREATE TABLE IF NOT EXISTS stockpile (
 
 
 INSERT INTO users (email, name, password, balance) VALUES ("test@test.com", "Sven Svensson",  "$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy", "12001");
-INSERT INTO items (name, quantity, manufacturer, price) VALUES ("Macbook", "200", "Apple", "1200");
+INSERT INTO items (name, quantity, manufacturer, price) 
+    VALUES ("Macbook", "200", "Apple", "19000"),
+    ("ZenBook", "5000", "ASUS", "15000"),
+    ("Thinkpad", "200", "Lenovo", "16000"),
+    ("Aspire", "200", "Acer", "10000"),
+    ("Omen", "200", "HP", "11000");

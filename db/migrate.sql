@@ -8,13 +8,18 @@ CREATE TABLE IF NOT EXISTS users (
     UNIQUE(email)
 );
 
+    -- rate: 1.002,
+    -- variance: 0.6,
+    -- startingPoint: 20,
 DROP TABLE IF EXISTS items;
 CREATE TABLE IF NOT EXISTS items (
     id INTEGER PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     quantity INT(20) NOT NULL,
     manufacturer VARCHAR(255),
-    price INT(20)
+    startingprice INT(20),
+    rate INT(20) NOT NULL,
+    variance VARCHAR(255) NOT NULL
 );
 
 DROP TABLE IF EXISTS stockpile;
@@ -27,9 +32,9 @@ CREATE TABLE IF NOT EXISTS stockpile (
 
 
 INSERT INTO users (email, name, password, balance) VALUES ("test@test.com", "Sven Svensson",  "$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy", "12001");
-INSERT INTO items (name, quantity, manufacturer, price) 
-    VALUES ("Macbook", "200", "Apple", "19000"),
-    ("ZenBook", "5000", "ASUS", "15000"),
-    ("Thinkpad", "200", "Lenovo", "16000"),
-    ("Aspire", "200", "Acer", "10000"),
-    ("Omen", "200", "HP", "11000");
+INSERT INTO items (name, quantity, manufacturer, startingprice, rate, variance) 
+    VALUES ("Macbook", "200", "Apple", "17000", "1.002", "1.6"),
+    ("ZenBook", "5000", "ASUS", "15000", "1.002", "1.4"),
+    ("Thinkpad", "200", "Lenovo", "12000", "1.002", "1.3"),
+    ("Aspire", "200", "Acer", "14000", "1.002", "1.4"),
+    ("Omen", "200", "HP", "16000", "1.002", "1.2");

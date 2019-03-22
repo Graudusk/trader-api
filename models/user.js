@@ -26,7 +26,7 @@ module.exports = (function () {
     }
 
     function getUserStockpile(res, id) {
-        db.all("SELECT stockpile.*, items.name, items.manufacturer, items.price FROM stockpile INNER JOIN items on stockpile.itemId = items.id WHERE user = ? ;",
+        db.all("SELECT stockpile.*, items.name, items.manufacturer FROM stockpile INNER JOIN items on stockpile.itemId = items.id WHERE user = ? ;",
         id,
         (err, row) => {
             if (err) return returnError(res, err, "/user/stockpile", "Database error");
@@ -35,7 +35,7 @@ module.exports = (function () {
     }
 
     function getUserStockpileItem(res, id, user) {
-        db.get("SELECT stockpile.*, items.name, items.manufacturer, items.price FROM stockpile INNER JOIN items on stockpile.itemId = items.id WHERE stockpile.user = ? AND stockpile.id = ?;",
+        db.get("SELECT stockpile.*, items.name, items.manufacturer FROM stockpile INNER JOIN items on stockpile.itemId = items.id WHERE stockpile.user = ? AND stockpile.id = ?;",
         user,
         id,
         (err, row) => {

@@ -63,10 +63,10 @@ module.exports = (function () {
                 db.get("Select balance FROM users WHERE id = ?", body.user, (err, row) => {
                     if (err) return returnError(res, err, "/item/buy", "Database error");
                     userBalance = row.balance;
-                }).get("Select quantity, price FROM items WHERE id = ?", body.item, (err, row) => {
+                }).get("Select quantity FROM items WHERE id = ?", body.item, (err, row) => {
                     if (err) return returnError(res, err, "/item/buy", "Database error");
                     itemQuantity = row.quantity;
-                    itemPrice = row.price;
+                    itemPrice = body.price;
 
                     if (userBalance - (itemPrice * body.quantity) > 0 && itemQuantity - body.quantity > 0) {
                         updateStockpile(res, body, itemPrice);
@@ -133,12 +133,36 @@ module.exports = (function () {
         });
     }
 
+
+    function randomAroundZero () {
+        return Math.random() > 0.5 ? 1 : -1;
+    }
+
+
+    function randomVariance (variance) {
+        return (Math.random() * variance * 10) * (Math.random() * variance * 10);
+    }
+
+    // rate: 1.001,
+    // variance: 0.4,
+    // startingPoint: 20000,
+    function getStockPrice (input) {
+        let start = input.price ? input.price : input.startingprice;
+        let rate = input.rate + randomVariance(input.variance);//input.rate;
+        let variance = input.variance;
+        // let change = rate + variance * randomAroundZero()
+
+        return Math.round(start + (rate * randomAroundZero()));
+    }
+
     return {
         buyItem: buyItem,
         sellItem: sellItem,
         addMoney: addMoney,
         returnError: returnError,
         getItems: getItems,
-        getItemDetails: getItemDetails
+        getItemDetails: getItemDetails,
+        randomAroundZero: randomAroundZero,
+        getStockPrice: getStockPrice
     };
 }());

@@ -8,9 +8,15 @@ const login = require('./routes/login');
 const balance = require('./routes/balance');
 const item = require('./routes/item');
 const user = require('./routes/user');
+const http = require('http').Server(app);
+const trader = require('./models/trader');
+// const io = require('socket.io')(http);
+const db = require('./db/database');
 const port = 1338;
+const WebSocket = require('ws')
 // const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chat";
 const bodyParser = require("body-parser");
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -20,7 +26,14 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined'));
 }
 
+let items;
+db.all("SELECT * FROM items;",
+(err, row) => {
+    if (err) console.log(err);
+    items = row;
+});
 app.use((req, res, next) => {
+    // console.log(items)
     console.log(req.method);
     console.log(req.path);
     next();
@@ -44,7 +57,6 @@ app.use((err, req, res, next) => {
     if (res.headersSent) {
         return next(err);
     }
-
     res.status(err.status || 500).json({
         "errors": [
             {
@@ -56,6 +68,33 @@ app.use((err, req, res, next) => {
     });
 });
 
+
+
+//Websocket
+
+// io.on('connection', function(socket) {
+//     console.log('a user connected');
+//     socket.on('disconnect', function() {
+//         console.log('user disconnected');
+//     });
+// });
+
+let looper = setInterval(function () {
+    items = items.map((item) => {
+        item["price"] = trader.getStockPrice(item);
+        return item;
+    });
+    // console.log(ws.OPEN);
+
+    // console.log(items);
+    // if (ws.OPEN === 1) {
+
+    //     ws.send(JSON.stringify(items));
+
+    // }
+}, 5000);
+
+
 // Start up server
 // const server = app.listen(port, () => console.log(`Me API listening on port ${port}!`));
 const server = app.listen(port, () => {
@@ -63,5 +102,55 @@ const server = app.listen(port, () => {
     // console.log(`DSN is: ${dsn}`);
 });
 // const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+const wss = new WebSocket.Server({ server }, "json");
+
+wss.on("connection", (ws/*, req*/) => {
+    console.log("Connection received.");
+    // console.log(req);
+    // items.map((item) => {
+    //     item["price"] = trader.getStockPrice(item);
+    //     return item;
+    // });
+    // console.log(ws.OPEN);
+
+    console.log(items);
+    if (ws.OPEN === 1) {
+
+        ws.send(JSON.stringify(items));
+
+    }
+
+
+    // console.log(ws.readyState)
+    let echo = setInterval(function () {
+        // items.map((item) => {
+        //     item["price"] = trader.getStockPrice(item);
+        //     return item;
+        // });
+        // console.log(ws.OPEN);
+
+        console.log(items);
+        if (ws.OPEN === 1) {
+
+            ws.send(JSON.stringify(items));
+
+        }
+    }, 5000);
+
+    ws.on("message", (message) => {
+        console.log("Received: %s", message);
+        ws.send(message);
+    });
+
+    ws.on("error", (error) => {
+        console.log(`Server error: ${error}`);
+    });
+
+    ws.on("close", (code, reason) => {
+        clearInterval(echo);
+        console.log(`Closing connection: ${code} ${reason}`);
+    });
+});
 
 module.exports = server;

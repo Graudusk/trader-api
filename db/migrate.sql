@@ -31,7 +31,9 @@ CREATE TABLE IF NOT EXISTS stockpile (
 );
 
 
-INSERT INTO users (email, name, password, balance) VALUES ("test@test.com", "Sven Svensson",  "$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy", "12001");
+INSERT INTO users (email, name, password, balance) VALUES 
+    ("test@test.com", "Sven Svensson",  "$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy", "12001"),
+    ("asdf@test.com", "Lars Lindström",  "$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy", "12001");
 INSERT INTO items (name, quantity, manufacturer, startingprice, rate, variance) 
     VALUES ("Macbook", "200", "Apple", "17000", "1.002", "1.6"),
     ("ZenBook", "5000", "ASUS", "15000", "1.002", "1.4"),

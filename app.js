@@ -8,13 +8,10 @@ const login = require('./routes/login');
 const balance = require('./routes/balance');
 const item = require('./routes/item');
 const user = require('./routes/user');
-const http = require('http').Server(app);
 const trader = require('./models/trader');
-// const io = require('socket.io')(http);
 const db = require('./db/database');
 const port = 1338;
-const WebSocket = require('ws')
-// const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chat";
+// const WebSocket = require('ws');
 const bodyParser = require("body-parser");
 
 
@@ -27,11 +24,16 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 let items;
+
 db.all("SELECT * FROM items;",
-(err, row) => {
-    if (err) console.log(err);
-    items = row;
-});
+    (err, row) => {
+        if (err) {
+            console.log(err);
+        }
+        items = row;
+    }
+);
+
 app.use((req, res, next) => {
     // console.log(items)
     console.log(req.method);
@@ -70,28 +72,11 @@ app.use((err, req, res, next) => {
 
 
 
-//Websocket
-
-// io.on('connection', function(socket) {
-//     console.log('a user connected');
-//     socket.on('disconnect', function() {
-//         console.log('user disconnected');
-//     });
-// });
-
-let looper = setInterval(function () {
+setInterval(function () {
     items = items.map((item) => {
         item["price"] = trader.getStockPrice(item);
         return item;
     });
-    // console.log(ws.OPEN);
-
-    // console.log(items);
-    // if (ws.OPEN === 1) {
-
-    //     ws.send(JSON.stringify(items));
-
-    // }
 }, 5000);
 
 
@@ -116,9 +101,7 @@ wss.on("connection", (ws/*, req*/) => {
 
     console.log(items);
     if (ws.OPEN === 1) {
-
         ws.send(JSON.stringify(items));
-
     }
 
 
@@ -132,9 +115,7 @@ wss.on("connection", (ws/*, req*/) => {
 
         console.log(items);
         if (ws.OPEN === 1) {
-
             ws.send(JSON.stringify(items));
-
         }
     }, 5000);
 

@@ -102,7 +102,7 @@ function doBuyItem(res, body, userBalance, itemPrice) {
                 message: "Insufficient funds for purchase."
             }, "/item/buy", "User error");
         }
-        return updateStockpile(res, body, itemPrice);
+        updateStockpile(res, body, itemPrice);
     });
 }
 

@@ -6,7 +6,8 @@ process.env.JWT_SECRET = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app.js');
-const db = require("../../db/database.js");
+const misc = require('../helpfiles/misc.js');
+// const db = require("../../db/database.js");
 
 let jwtoken;
 
@@ -65,7 +66,7 @@ describe('Items 403 paths', () => {
 
 describe('Login', () => {
     before(() => {
-        db.serialize(() => {
+        /*db.serialize(() => {
             db.run("DELETE FROM users", (err) => {
                 if (err) {
                     console.error("Could not empty test DB users", err.message);
@@ -73,7 +74,8 @@ describe('Login', () => {
             }).run(`
 INSERT INTO users (email, password, name, balance) VALUES ("test@test.com",
 "$2a$10$7P3dxy.BxyOkjaYW9pNsb.cuZ0R9b0jtMNhye3KywDKKyp2nlxwoi", "namn", "1000000")`);
-        });
+        });*/
+        misc.prepare();
     });
 
     describe('POST /login', () => {

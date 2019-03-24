@@ -6,8 +6,9 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app.js');
 // const assert = require("assert");
+const misc = require('../helpfiles/misc.js');
 
-const db = require("../../db/database.js");
+// const db = require("../../db/database.js");
 
 // let jwtoken = '';
 
@@ -17,7 +18,7 @@ chai.use(chaiHttp);
 
 describe('Login', () => {
     before(() => {
-        db.serialize(() => {
+        /*db.serialize(() => {
             db.run("DELETE FROM users", (err) => {
                 if (err) {
                     console.error("Could not empty test DB users", err.message);
@@ -28,7 +29,8 @@ VALUES
 ('test@test.com',
 '$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy',
 'test')`);
-        });
+        });*/
+        misc.prepare();
     });
 
     describe('POST /register', () => {

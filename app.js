@@ -11,7 +11,7 @@ const user = require('./routes/user');
 const trader = require('./models/trader');
 const db = require('./db/database');
 const port = 1338;
-// const WebSocket = require('ws');
+const WebSocket = require('ws');
 const bodyParser = require("body-parser");
 
 

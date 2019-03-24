@@ -30,7 +30,7 @@ function sellItem(res, body) {
         itemStock = row.stock;
         itemId = row.itemId;
 
-        updateSold(res, body, itemStock, itemId);
+        return updateSold(res, body, itemStock, itemId);
     });
 }
 
@@ -41,12 +41,14 @@ function updateSold(res, body, itemStock, itemId) {
                 if (err) {
                     return returnError(res, err, "/item/sell", "Database error");
                 }
+                return undefined;
             }
         ).run("UPDATE items SET quantity = quantity + ? WHERE id = ?;",
             itemStock, itemId, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/sell", "Database error");
                 }
+                return undefined;
             }
         ).run("DELETE FROM stockpile WHERE id = ?;",
             body.id,
@@ -54,7 +56,7 @@ function updateSold(res, body, itemStock, itemId) {
                 if (err) {
                     return returnError(res, err, "/item/sell", "Database error");
                 }
-                res.status(201).json({ data: body });
+                return res.status(201).json({ data: body });
             }
         );
     });
@@ -70,9 +72,8 @@ function buyItem(res, body) {
                     return returnError(res, {
                         message: "No such item"
                     }, "/item/buy", "Database error");
-                } else {
-                    doBuyItem(res, body, row.balance, body.price);
                 }
+                return doBuyItem(res, body, row.balance, body.price);
             });
         });
     } else {
@@ -89,21 +90,19 @@ function doBuyItem(res, body, userBalance, itemPrice) {
             return returnError(res, {
                 message: "No such item"
             }, "/item/buy", "Database error");
-        } else {
-            let itemQuantity = row.quantity;
-
-            if (itemQuantity - body.quantity < 0) {
-                return returnError(res, {
-                    message: "Not enough items in stock for purchase."
-                }, "/item/buy", "User error");
-            } else if (userBalance - (itemPrice * body.quantity) < 0) {
-                return returnError(res, {
-                    message: "Insufficient funds for purchase."
-                }, "/item/buy", "User error");
-            } else {
-                updateStockpile(res, body, itemPrice);
-            }
         }
+        let itemQuantity = row.quantity;
+
+        if (itemQuantity - body.quantity < 0) {
+            return returnError(res, {
+                message: "Not enough items in stock for purchase."
+            }, "/item/buy", "User error");
+        } else if (userBalance - (itemPrice * body.quantity) < 0) {
+            return returnError(res, {
+                message: "Insufficient funds for purchase."
+            }, "/item/buy", "User error");
+        }
+        return updateStockpile(res, body, itemPrice);
     });
 }
 

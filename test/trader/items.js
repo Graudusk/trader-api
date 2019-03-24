@@ -71,11 +71,8 @@ describe('Login', () => {
                     console.error("Could not empty test DB users", err.message);
                 }
             }).run(`
-INSERT INTO users (email, password, name, balance)
-VALUES
-('test@test.com',
-'$2a$10$7P3dxy.BxyOkjaYW9pNsb.cuZ0R9b0jtMNhye3KywDKKyp2nlxwoi',
-'test', '1000000')`);
+INSERT INTO users (email, password, name, balance) VALUES ("test@test.com",
+"$2a$10$7P3dxy.BxyOkjaYW9pNsb.cuZ0R9b0jtMNhye3KywDKKyp2nlxwoi", "namn", "1000000")`);
         });
     });
 
@@ -87,14 +84,11 @@ VALUES
                 .send({
                     '_method': 'post',
                     'email': 'tester@test.com',
-                    'password': '0'
+                    'password': '0awerhgaerhaerh'
                 })
                 .end((err, res) => {
-                    // jwtoken = res.body.data.token;
                     res.should.have.status(401);
                     res.body.should.be.an("object");
-                    // res.body.data.should.be.an("object");
-                    // res.body.data.length.should.be.above(0);
 
                     done();
                 });

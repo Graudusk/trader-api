@@ -1,19 +1,18 @@
 const db = require('../db/database');
 
-module.exports = (function () {
-    function returnError(res, err, source, title, status = 500) {
-        return res.status(status).json({
-            errors: {
-                status: status,
-                source: source,
-                title: title,
-                detail: err.message
-            }
-        });
-    }
+function returnError(res, err, source, title, status = 500) {
+    return res.status(status).json({
+        errors: {
+            status: status,
+            source: source,
+            title: title,
+            detail: err.message
+        }
+    });
+}
 
-    function getUserDetails(res, id) {
-        db.get(`
+function getUserDetails(res, id) {
+    db.get(`
 SELECT
     users.*,
     COUNT(stockpile.id) AS stock
@@ -29,10 +28,10 @@ WHERE users.id = ?;
             }
             res.status(200).json({ data: row });
         });
-    }
+}
 
-    function getUserStockpile(res, id) {
-        db.all(`
+function getUserStockpile(res, id) {
+    db.all(`
 SELECT
     stockpile.*,
     items.name,
@@ -51,10 +50,10 @@ WHERE
             }
             res.status(200).json({ data: row });
         });
-    }
+}
 
-    function getUserStockpileItem(res, id, user) {
-        db.get(`
+function getUserStockpileItem(res, id, user) {
+    db.get(`
 SELECT
     stockpile.*,
     items.name,
@@ -74,11 +73,10 @@ WHERE
             }
             res.status(200).json({ data: row });
         });
-    }
+}
 
-    return {
-        getUserDetails: getUserDetails,
-        getUserStockpile: getUserStockpile,
-        getUserStockpileItem: getUserStockpileItem
-    };
-}());
+module.exports = {
+    getUserDetails: getUserDetails,
+    getUserStockpile: getUserStockpile,
+    getUserStockpileItem: getUserStockpileItem
+};

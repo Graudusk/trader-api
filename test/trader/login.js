@@ -22,7 +22,12 @@ describe('Login', () => {
                 if (err) {
                     console.error("Could not empty test DB users", err.message);
                 }
-            }).run("INSERT INTO users (email, password, name) VALUES ('test@test.com', '$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy', 'test')")
+            }).run(`
+INSERT INTO users (email, password, name)
+VALUES
+('test@test.com',
+'$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy',
+'test')`);
         });
     });
 

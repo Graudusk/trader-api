@@ -5,12 +5,12 @@ const jwt = require('jsonwebtoken');
 function getUserDetails(res, id) {
     db.get(` SELECT users.*, COUNT(stockpile.id) AS stock FROM users
 LEFT JOIN stockpile ON stockpile.user = users.id WHERE users.id = ?; `,
-        id, (err, row) => {
-            if (err) {
-                return trader.returnError(res, err, "/user", "Database error");
-            }
-            res.status(200).json({ data: row });
-        });
+    id, (err, row) => {
+        if (err) {
+            return trader.returnError(res, err, "/user", "Database error");
+        }
+        res.status(200).json({ data: row });
+    });
 }
 
 function getUserStockpile(res, id) {
@@ -24,15 +24,12 @@ FROM
 INNER JOIN
     items on stockpile.itemId = items.id
 WHERE
-    user = ?;
-        `,
-        id,
-        (err, row) => {
-            if (err) {
-                return trader.returnError(res, err, "/user/stockpile", "Database error");
-            }
-            res.status(200).json({ data: row });
-        });
+    user = ?; `, id, (err, row) => {
+        if (err) {
+            return trader.returnError(res, err, "/user/stockpile", "Database error");
+        }
+        res.status(200).json({ data: row });
+    });
 }
 
 function getUserStockpileItem(res, id, user) {
@@ -46,16 +43,12 @@ FROM
 INNER JOIN
     items on stockpile.itemId = items.id
 WHERE
-    stockpile.user = ? AND stockpile.id = ?;
-        `,
-        user,
-        id,
-        (err, row) => {
-            if (err) {
-                return trader.returnError(res, err, "/user/stockpile/item", "Database error");
-            }
-            res.status(200).json({ data: row });
-        });
+    stockpile.user = ? AND stockpile.id = ?; `, user, id, (err, row) => {
+        if (err) {
+            return trader.returnError(res, err, "/user/stockpile/item", "Database error");
+        }
+        res.status(200).json({ data: row });
+    });
 }
 
 function checkToken(req, res, next) {

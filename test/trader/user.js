@@ -2,7 +2,7 @@
 process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = 'test';
 
-/* global describe it */
+/* global describe it before */
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app.js');
@@ -19,7 +19,6 @@ describe('Items 403 paths', () => {
             chai.request(server)
                 .get("/user/1")
                 .end((err, res) => {
-                    console.log()
                     res.should.have.status(403);
 
                     done();
@@ -59,7 +58,11 @@ describe('Login', () => {
                 if (err) {
                     console.error("Could not empty test DB users", err.message);
                 }
-            }).run("INSERT INTO users (email, password, name, balance) VALUES ('test@test.com', '$2a$10$7P3dxy.BxyOkjaYW9pNsb.cuZ0R9b0jtMNhye3KywDKKyp2nlxwoi', 'test', '1000000')")
+            }).run(`
+INSERT INTO users (email, password, name, balance)
+VALUES ('test@test.com',
+'$2a$10$7P3dxy.BxyOkjaYW9pNsb.cuZ0R9b0jtMNhye3KywDKKyp2nlxwoi',
+'test', '1000000')`);
         });
     });
 
@@ -141,7 +144,6 @@ describe('User 200 paths', () => {
                 .get("/user/1")
                 .set('x-access-token', jwtoken)
                 .end((err, res) => {
-                    console.log()
                     res.should.have.status(200);
 
                     done();
@@ -202,47 +204,3 @@ describe('Balance', () => {
         });
     });
 });
-
-/*
-describe('User 500 errors', () => {
-    describe('GET /user/e', () => {
-        it('Should return status code 500', (done) => {
-            chai.request(server)
-                .get("/user/e")
-                .set('x-access-token', jwtoken)
-                .end((err, res) => {
-                    console.log()
-                    res.should.have.status(500);
-
-                    done();
-                });
-        });
-    });
-
-    describe('GET /user/stockpile/e', () => {
-        it('Should return status code 500', (done) => {
-            chai.request(server)
-                .get("/user/stockpile/e")
-                .set('x-access-token', jwtoken)
-                .end((err, res) => {
-                    res.should.have.status(500);
-
-                    done();
-                });
-        });
-    });
-
-    describe('GET /user/stockpile/item/e/e', () => {
-        it('Should return status code 500', (done) => {
-            chai.request(server)
-                .get("/user/stockpile/item/e/e")
-                .set('x-access-token', jwtoken)
-                .end((err, res) => {
-                    res.should.have.status(500);
-
-                    done();
-                });
-        });
-    });
-});
-*/

@@ -2,7 +2,7 @@
 process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = 'test';
 
-/* global describe it */
+/* global describe it before */
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app.js');
@@ -38,7 +38,9 @@ describe('Login', () => {
                 if (err) {
                     console.error("Could not empty test DB users", err.message);
                 }
-            }).run("INSERT INTO users (email, password, name) VALUES ('test@test.com', '$2a$10$7P3dxy.BxyOkjaYW9pNsb.cuZ0R9b0jtMNhye3KywDKKyp2nlxwoi', 'test')")
+            }).run(`
+INSERT INTO users (email, password, name)
+VALUES ('test@test.com','$2a$10$7P3dxy.BxyOkjaYW9pNsb.cuZ0R9b0jtMNhye3KywDKKyp2nlxwoi', 'test')`);
         });
     });
 
@@ -75,7 +77,6 @@ describe('Login', () => {
                     'password': 'test'
                 })
                 .end((err, res) => {
-                    console.log(res.body)
                     jwtoken = res.body.data.token;
                     res.should.have.status(200);
                     res.body.should.be.an("object");
@@ -112,37 +113,3 @@ describe('Balance', () => {
         });
     });
 });
-
-/*
-describe('Reports', () => {
-    describe('POST /reports/', () => {
-        it('403 NOT AUTHORIZED', (done) => {
-            chai.request(server)
-                .post("/reports/")
-                .end((err, res) => {
-                    res.should.have.status(403);
-                    // res.body.should.be.an("object");
-                    // res.body.data.should.be.an("array");
-                    // res.body.data.length.should.be.above(0);
-
-                    done();
-                });
-        });
-    });
-
-    describe('GET /reports/kmom01', () => {
-        it('200 HAPPY PATH', (done) => {
-            chai.request(server)
-                .get("/reports/kmom01")
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.an("object");
-                    res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.above(0);
-
-                    done();
-                });
-        });
-    });
-});
-*/

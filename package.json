@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "nyc --reporter=html --reporter=clover --reporter=text mocha test/**/*.js",
+    "test": "nyc --reporter=html --reporter=clover --reporter=text mocha test/**/*.js --exit",
     "posttest": "npm run eslint",
     "eslint": "eslint .",
     "selenium": "node node_modules/http-server/bin/http-server -p 8082 app.js",

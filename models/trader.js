@@ -116,26 +116,19 @@ function doBuyItem(res, body, userBalance, itemPrice) {
 function updateStockpile(res, body, itemPrice) {
     db.serialize(() => {
         db.run("UPDATE users SET balance = balance - ? WHERE id = ?;",
-            (itemPrice * body.quantity),
-            body.user,
-            (err) => {
+            (itemPrice * body.quantity), body.user, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/buy", "Database error");
                 }
             }
         ).run("UPDATE items SET quantity = quantity - ? WHERE id = ?;",
-            body.quantity,
-            body.item,
-            (err) => {
+            body.quantity, body.item, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/buy", "Database error");
                 }
             }
         ).run("INSERT INTO stockpile (itemId, user, quantity) VALUES (?, ?, ?);",
-            body.item,
-            body.user,
-            body.quantity,
-            (err) => {
+            body.item, body.user, body.quantity, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/buy", "Database error");
                 }

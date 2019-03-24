@@ -1,5 +1,6 @@
 # trader-api
 
+[![Build Status](https://travis-ci.org/Graudusk/trader-api.svg?branch=master)](https://travis-ci.org/Graudusk/trader-api)
 [![CircleCI](https://circleci.com/gh/Graudusk/trader-api.svg?style=svg)](https://circleci.com/gh/Graudusk/trader-api)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/8356a05ca4937c367474/maintainability)](https://codeclimate.com/github/Graudusk/trader-api/maintainability)

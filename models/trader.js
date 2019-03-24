@@ -15,7 +15,6 @@ function returnError(res, err, source, title, status = 500) {
 
 function sellItem(res, body) {
     let itemStock;
-    let itemPrice;
     let itemId;
 
     db.get(`SELECT *, s.quantity AS stock FROM stockpile AS s 
@@ -28,28 +27,23 @@ function sellItem(res, body) {
                 message: "No such item"
             }, "/item/sell", "Database error");
         }
-        itemPrice = body.price;
         itemStock = row.stock;
         itemId = row.itemId;
 
-        updateSold(res, body, itemPrice, itemStock, itemId);
+        updateSold(res, body, itemStock, itemId);
     });
 }
 
-function updateSold(res, body, itemPrice, itemStock, itemId) {
+function updateSold(res, body, itemStock, itemId) {
     db.serialize(() => {
         db.run("UPDATE users SET balance = balance + ? WHERE id = ?;",
-            (itemPrice * itemStock),
-            body.user,
-            (err) => {
+            (body.price * itemStock), body.user, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/sell", "Database error");
                 }
             }
         ).run("UPDATE items SET quantity = quantity + ? WHERE id = ?;",
-            itemStock,
-            itemId,
-            (err) => {
+            itemStock, itemId, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/sell", "Database error");
                 }
@@ -120,20 +114,17 @@ function updateStockpile(res, body, itemPrice) {
                 if (err) {
                     return returnError(res, err, "/item/buy", "Database error");
                 }
-            }
-        ).run("UPDATE items SET quantity = quantity - ? WHERE id = ?;",
+            }).run("UPDATE items SET quantity = quantity - ? WHERE id = ?;",
             body.quantity, body.item, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/buy", "Database error");
                 }
-            }
-        ).run("INSERT INTO stockpile (itemId, user, quantity) VALUES (?, ?, ?);",
+            }).run("INSERT INTO stockpile (itemId, user, quantity) VALUES (?, ?, ?);",
             body.item, body.user, body.quantity, (err) => {
                 if (err) {
                     return returnError(res, err, "/item/buy", "Database error");
                 }
-            }
-        ).get("SELECT balance FROM users WHERE id = ?;", body.user, (err, row) => {
+            }).get("SELECT balance FROM users WHERE id = ?;", body.user, (err, row) => {
             if (err) {
                 return returnError(res, err, "/item/buy", "Database error");
             }

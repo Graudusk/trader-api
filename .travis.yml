@@ -9,6 +9,7 @@ sudo: false
 
 env:
     - JWT_SECRET="=)wl3k520g9s<onk02354lk<g09u6OLKW0TWA9Y505OSEIRGKHelkrnh"
+    - NODE_ENV="test"
 
 
 git:

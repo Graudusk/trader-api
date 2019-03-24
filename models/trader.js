@@ -4,7 +4,7 @@ const db = require('../db/database');
 
 module.exports = (function () {
     function returnError(res, err, source, title, status = 500) {
-        return res.status(status).json({
+        res.status(status).json({
             errors: {
                 status: status,
                 source: source,
@@ -20,10 +20,22 @@ module.exports = (function () {
         let itemId;
 
         db.serialize(() => {
-            db.get("Select *, s.quantity AS stock FROM stockpile AS s INNER JOIN items AS i ON s.itemId = i.id WHERE s.id = ?;", body.id, (err, row) => {
-                if (err) return returnError(res, err, "/item/sell", "Database error");
+            db.get(`
+SELECT
+    *,
+    s.quantity AS stock
+FROM 
+    stockpile AS s
+INNER JOIN items AS i ON s.itemId = i.id
+WHERE s.id = ?;
+                `, body.id, (err, row) => {
+                if (err) {
+                    return returnError(res, err, "/item/sell", "Database error");
+                }
                 if (row === undefined) {
-                    return returnError(res, {message: "No such item"}, "/item/sell", "Database error");
+                    return returnError(res, {
+                        message: "No such item"
+                    }, "/item/sell", "Database error");
                 }
                 itemPrice = body.price;
                 itemStock = row.stock;
@@ -73,21 +85,37 @@ module.exports = (function () {
                 db.get("Select balance FROM users WHERE id = ?", body.user, (err, row) => {
                     if (err) {
                         return returnError(res, err, "/item/buy", "Database error");
-                    }
-                    userBalance = row.balance;
-                }).get("Select quantity FROM items WHERE id = ?", body.item, (err, row) => {
-                    if (err) {
-                        return returnError(res, err, "/item/buy", "Database error");
-                    }
-                    itemQuantity = row.quantity;
-                    itemPrice = body.price;
-
-                    if (itemQuantity - body.quantity < 0) {
-                        return returnError(res, {message: "Not enough items in stock for purchase."}, "/item/buy", "User error");
-                    } else if (userBalance - (itemPrice * body.quantity) < 0) {
-                        return returnError(res, {message: "Insufficient funds for purchase."}, "/item/buy", "User error");
+                    } else if (row === undefined) {
+                        return returnError(res, {
+                            message: "No such item"
+                        }, "/item/buy", "Database error");
                     } else {
-                        updateStockpile(res, body, itemPrice);
+                        userBalance = row.balance;
+                        db.get("Select quantity FROM items WHERE id = ?", body.item, (err, row) => {
+                            if (err) {
+                                return returnError(res, err, "/item/buy", "Database error");
+                            }
+                            if (row === undefined) {
+                                return returnError(res, {
+                                    message: "No such item"
+                                }, "/item/buy", "Database error");
+                            } else {
+                                itemQuantity = row.quantity;
+                                itemPrice = body.price;
+
+                                if (itemQuantity - body.quantity < 0) {
+                                    return returnError(res, {
+                                        message: "Not enough items in stock for purchase."
+                                    }, "/item/buy", "User error");
+                                } else if (userBalance - (itemPrice * body.quantity) < 0) {
+                                    return returnError(res, {
+                                        message: "Insufficient funds for purchase."
+                                    }, "/item/buy", "User error");
+                                } else {
+                                    updateStockpile(res, body, itemPrice);
+                                }
+                            }
+                        });
                     }
                 });
             });
@@ -110,16 +138,23 @@ module.exports = (function () {
                 body.quantity,
                 body.item,
                 (err) => {
-                    if (err) return returnError(res, err, "/item/buy", "Database error");
-
-            }).run("INSERT INTO stockpile (itemId, user, quantity) VALUES (?, ?, ?);",
+                    if (err) {
+                        return returnError(res, err, "/item/buy", "Database error");
+                    }
+                }
+            ).run("INSERT INTO stockpile (itemId, user, quantity) VALUES (?, ?, ?);",
                 body.item,
                 body.user,
                 body.quantity,
                 (err) => {
-                    if (err) return returnError(res, err, "/item/buy", "Database error");
-            }).get("SELECT balance FROM users WHERE id = ?;", body.user, (err, row) => {
-                if (err) return returnError(res, err, "/item/buy", "Database error");
+                    if (err) {
+                        return returnError(res, err, "/item/buy", "Database error");
+                    }
+                }
+            ).get("SELECT balance FROM users WHERE id = ?;", body.user, (err, row) => {
+                if (err) {
+                    return returnError(res, err, "/item/buy", "Database error");
+                }
                 res.status(201).json({ data: body, row: row });
             });
         });
@@ -127,49 +162,53 @@ module.exports = (function () {
 
     function addMoney(res, body) {
         db.run("UPDATE users SET balance = balance + ? WHERE id = ?;",
-        body.balance,
-        body.id,
-        (err) => {
-            if (err) return returnError(res, err, "/balance", "Database error");
-            res.status(201).json({ data: body });
-        });
+            body.balance,
+            body.id,
+            (err) => {
+                if (err) {
+                    return returnError(res, err, "/balance", "Database error");
+                }
+                res.status(201).json({ data: body });
+            }
+        );
     }
 
     function getItems(res) {
         db.all("SELECT * FROM items;",
-        (err, row) => {
-            if (err) return returnError(res, err, "items/all", "Database error");
-            res.status(201).json({ data: row });
-        });
+            (err, row) => {
+                if (err) {
+                    return returnError(res, err, "items/all", "Database error");
+                }
+                res.status(201).json({ data: row });
+            }
+        );
     }
 
     function getItemDetails(res, id) {
         db.get("SELECT * FROM items WHERE id = ?;",
-        id,
-        (err, row) => {
-            if (err) return returnError(res, err, "items/all", "Database error");
-            res.status(201).json({ data: row });
-        });
+            id,
+            (err, row) => {
+                if (err) {
+                    return returnError(res, err, "items/all", "Database error");
+                }
+                res.status(201).json({ data: row });
+            }
+        );
     }
 
 
-    function randomAroundZero () {
+    function randomAroundZero() {
         return Math.random() > 0.5 ? 1 : -1;
     }
 
 
-    function randomVariance (variance) {
+    function randomVariance(variance) {
         return (Math.random() * variance * 10) * (Math.random() * variance * 10);
     }
 
-    // rate: 1.001,
-    // variance: 0.4,
-    // startingPoint: 20000,
-    function getStockPrice (input) {
+    function getStockPrice(input) {
         let start = input.price ? input.price : input.startingprice;
-        let rate = input.rate + randomVariance(input.variance);//input.rate;
-        let variance = input.variance;
-        // let change = rate + variance * randomAroundZero()
+        let rate = input.rate + randomVariance(input.variance);
 
         return Math.round(start + (rate * randomAroundZero()));
     }

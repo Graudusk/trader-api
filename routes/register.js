@@ -19,9 +19,10 @@ router.post("/", (req, res) => {
 
     bcrypt.hash(body.password, saltRounds, function(err, hash) {
         // spara lösenord i databasen.
-        db.run("INSERT INTO users (email, password) VALUES (?, ?)",
+        db.run("INSERT INTO users (email, password, name) VALUES (?, ?, ?)",
             body.email,
             hash,
+            body.name,
             (err) => {
                 if (err) {
                     return trader.returnError(res, err, "/register", "Database error");

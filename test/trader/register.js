@@ -16,10 +16,12 @@ chai.use(chaiHttp);
 
 describe('Register', () => {
     before(() => {
-        db.run("DELETE FROM users", (err) => {
-            if (err) {
-                console.error("Could not empty test DB users", err.message);
-            }
+        db.serialize(() => {
+            db.run("DELETE FROM users", (err) => {
+                if (err) {
+                    console.error("Could not empty test DB users", err.message);
+                }
+            }).run("INSERT INTO users (email, password, name) VALUES ('test@test.com', '$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy', 'test')")
         });
     });
 
@@ -33,7 +35,6 @@ describe('Register', () => {
                     'password': ''
                 })
                 .end((err, res) => {
-                    // console.log(res);
                     res.should.have.status(500);
                     // res.body.should.be.an("object");
                     // res.body.data.should.be.an("array");
@@ -53,10 +54,10 @@ describe('Register', () => {
                 .send({
                     '_method': 'post',
                     'email': 'tester@test.com',
-                    'password': 'test'
+                    'password': 'test',
+                    'name': 'test'
                 })
                 .end((err, res) => {
-                    // console.log(res);
                     res.should.have.status(201);
                     // res.body.should.be.an("object");
                     // res.body.data.should.be.an("array");

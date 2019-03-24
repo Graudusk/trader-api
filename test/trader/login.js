@@ -9,7 +9,7 @@ const server = require('../../app.js');
 
 const db = require("../../db/database.js");
 
-let jwtoken = '';
+// let jwtoken = '';
 
 chai.should();
 
@@ -17,15 +17,12 @@ chai.use(chaiHttp);
 
 describe('Login', () => {
     before(() => {
-        db.run("DELETE FROM users", (err) => {
-            if (err) {
-                console.error("Could not empty test DB users", err.message);
-            }
-        });
-        db.run("DELETE FROM reports WHERE title = 'title'", (err) => {
-            if (err) {
-                console.error("Could not empty reports", err.message);
-            }
+        db.serialize(() => {
+            db.run("DELETE FROM users", (err) => {
+                if (err) {
+                    console.error("Could not empty test DB users", err.message);
+                }
+            }).run("INSERT INTO users (email, password, name) VALUES ('test@test.com', '$2a$10$kqF0yrjU7YflcjPn6HpoyOylm1hxawY.c16Y/1QlMNjDgsvq9dHGy', 'test')")
         });
     });
 
@@ -37,10 +34,10 @@ describe('Login', () => {
                 .send({
                     '_method': 'post',
                     'email': 'tester@test.com',
-                    'password': 'test'
+                    'password': 'test',
+                    'name': 'test'
                 })
                 .end((err, res) => {
-                    // console.log(res);
                     res.should.have.status(201);
                     // res.body.should.be.an("object");
                     // res.body.data.should.be.an("array");
@@ -121,11 +118,11 @@ describe('Login', () => {
                 .type('form')
                 .send({
                     '_method': 'post',
-                    'email': 'tester@test.com',
+                    'email': 'test@test.com',
                     'password': 'test'
                 })
                 .end((err, res) => {
-                    jwtoken = res.body.data.token;
+                    // jwtoken = res.body.data.token;
                     res.should.have.status(200);
                     res.body.should.be.an("object");
                     res.body.data.should.be.an("object");

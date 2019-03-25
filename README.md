@@ -39,6 +39,10 @@ Jag valde att gå över från [Vue.js](https://vuejs.org/) i tidigare kursmoment
 
 För att visa upp priserna som hämtas i realtid använder jag mig av reactmodulen [react-chartjs-2](https://github.com/jerairrest/react-chartjs-2). Den jobbar bra tillsammans med websocket och har bra stöd för att uppdatera datan i realtid.
 
+För att få ett snyggt och tydligt utseende på webbappen använde jag mig av React-komponenten [Material ui](https://material-ui.com/) som är ett element- och stilAPI som implementearar Googles stilguide [Material Design](https://material.io/).
+
+Det gör att sidans kvalitet av utseende lyfter enormt mycket samt att sidan blir responsiv då Material-ui är designat Mobile first. Komponenterna som följer med material-ui är lätta att använda sig av och känns som om de vore en del av React.
+
 ## Testning
 
 För att köra dina egna tester på ditt egna klonade lokala repositorie, kör följande kommandot:
@@ -51,7 +55,7 @@ För att se kodtäckningen gå till projektmappens url och navigera till /covera
 
 Jag gör integrationstester med hjälp av [Chai](https://www.chaijs.com/) för att testa min backend-kod. Anledningen till att jag gör integrationstester och inte enhetstester för att testa min kod är för att koden är skriven i enhetliga funktioner som kallas på av routes:en. Därför kräver funktionerna en speciell miljö och vissa objekt som skapas av servern vid körning. Dessa går att mocka upp för att skapa samma miljö som skarpa användningsmiljön eller miljön för integrationstesterna, men då är funktionerna inte längre självständiga och enhetstest-sammanhanget har ingen relevans.
 
-För att visa upp kodtäckning genererar jag kodtäckningsfiler med [istanbul](https://istanbul.js.org/).
+För att visa upp kodtäckning genererar jag kodtäckningsfiler med [istanbul](https://istanbul.js.org/). Jag har i skrivande stund 82% kodtäckning.
 
 Något som inte täcks av mina kodtester är realtidsgenereringen av priser samt websockets som skickar ut priserna.
 

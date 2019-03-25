@@ -23,7 +23,7 @@ npm start
 
 ### Server
 
-Som server-ramverk valde jag [Express](https://expressjs.com/). Jag har jobbat i den väldigt mycket förut, är bekväm med den och den fungerar utmärkt. Det är också den mest använda server-ramverket till Nodejs och har flest nedladdningar. 
+Som server-ramverk valde jag [Express](https://expressjs.com/). Jag har jobbat i den väldigt mycket förut, är bekväm med den och den fungerar utmärkt. Det är också den mest använda server-ramverket till Nodejs och har flest stjärnmärkningar på github jämfört med andra ramverk.
 
 Express är lätt att få igång och att sätta upp ett API samt routes går fort och lite mer komplicerade aspekter som inloggning, sessionshantering och autentisering fixas lätt med Express.
 

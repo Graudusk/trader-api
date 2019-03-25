@@ -53,7 +53,7 @@ För att se kodtäckningen gå till projektmappens url och navigera till /covera
 
 Jag gör integrationstester med hjälp av [Chai](https://www.chaijs.com/) för att testa min backend-kod. Anledningen till att jag gör integrationstester och inte enhetstester för att testa min kod är för att koden är skriven i enhetliga funktioner som kallas på av routes:en. Därför kräver funktionerna en speciell miljö och vissa objekt som skapas av servern vid körning. Dessa går att mocka upp för att skapa samma miljö som skarpa användningsmiljön eller miljön för integrationstesterna, men då är funktionerna inte längre självständiga och enhetstest-sammanhanget har ingen relevans.
 
-För att visa upp kodtäckning genererar jag kodtäckningsfiler med [istanbul](https://istanbul.js.org/). Jag har i skrivande stund 82% kodtäckning.
+För att visa upp kodtäckning genererar jag kodtäckningsfiler med [istanbul](https://istanbul.js.org/). Jag har i skrivande stund 83% kodtäckning.
 
 Något som inte täcks av mina kodtester är realtidsgenereringen av priser samt websockets som skickar ut priserna.
 

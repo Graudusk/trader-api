@@ -21,13 +21,13 @@ npm start
 # Val av tekniker
 ## Backend
 
-###Server
+### Server
 
 Som server-ramverk valde jag Express. Jag har jobbat i den väldigt mycket förut, är bekväm med den och den fungerar utmärkt. Det är också den mest använda server-ramverket till Nodejs och har flest nedladdningar. 
 
 Express är lätt att få igång och att sätta upp ett API samt routes går fort och lite mer komplicerade aspekter som inloggning, sessionshantering och autentisering fixas lätt med Express.
 
-###Websockets
+### Websockets
 
 Jag använde mig av vanliga websocket-API:t för att hämta priserna i realtid. Min Express-server räknar ut och sparar nya priser när den är igång och när en användare ansluter till websocketservern skickas priserna ut i intervaller.
 

@@ -23,16 +23,18 @@ npm start
 
 ### Server
 
-Som server-ramverk valde jag Express. Jag har jobbat i den väldigt mycket förut, är bekväm med den och den fungerar utmärkt. Det är också den mest använda server-ramverket till Nodejs och har flest nedladdningar. 
+Som server-ramverk valde jag [Express](https://expressjs.com/). Jag har jobbat i den väldigt mycket förut, är bekväm med den och den fungerar utmärkt. Det är också den mest använda server-ramverket till Nodejs och har flest nedladdningar. 
 
 Express är lätt att få igång och att sätta upp ett API samt routes går fort och lite mer komplicerade aspekter som inloggning, sessionshantering och autentisering fixas lätt med Express.
 
 ### Websockets
 
-Jag använde mig av vanliga websocket-API:t för att hämta priserna i realtid. Min Express-server räknar ut och sparar nya priser när den är igång och när en användare ansluter till websocketservern skickas priserna ut i intervaller.
+Jag använde mig av vanliga [websocket-API:t](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) för att hämta priserna i realtid. Min Express-server räknar ut och sparar nya priser när den är igång och när en användare ansluter till websocketservern skickas priserna ut i intervaller.
 
 Jag tittade på andra bibliotek som sköter websockets som socket.io men jag kände inte att jag behövde krångla till det ytterligare. Funktionaliteten är minimal och behöver inte något mer än chat-appens websocket-server/klient.
 
 ## Frontend
 
-Jag valde att gå över från Vue.js i tidigare kursmoment till React inför projektet. Dels för att jag inte gillade Vue och dels för att jag var sugen på att testa något annat och se hur det känns. Jag gillade React skarpt och hade lätt att förstå sättet som man jobbar med det.
+Jag valde att gå över från [Vue.js](https://vuejs.org/) i tidigare kursmoment till [React](https://reactjs.org/) inför projektet. Dels för att jag inte gillade Vue och dels för att jag var sugen på att testa något annat och se hur det känns. Jag gillade React skarpt och hade lätt att förstå sättet som man jobbar med det.
+
+För att visa upp priserna som hämtas i realtid använder jag mig av reactmodulen [react-chartjs-2](https://github.com/jerairrest/react-chartjs-2). Den jobbar bra tillsammans med websocket och har bra stöd för att uppdatera datan i realtid.

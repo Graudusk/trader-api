@@ -25,23 +25,21 @@ npm start
 
 Som server-ramverk valde jag [Express](https://expressjs.com/). Jag har jobbat i den väldigt mycket förut, är bekväm med den och den fungerar utmärkt. Det är också den mest använda server-ramverket till Nodejs och har flest stjärnmärkningar på github jämfört med andra ramverk.
 
-Express är lätt att få igång och att sätta upp ett API samt routes går fort och lite mer komplicerade aspekter som inloggning, sessionshantering och autentisering fixas lätt med Express.
+Express är lätt att få igång och att sätta upp ett API tillsammans med routes går fort. Lite mer komplicerade aspekter som inloggning, sessionshantering och autentisering är inte svårt att implementera inom ramverket.
 
 ### Websockets
 
 Jag använde mig av vanliga [websocket-API:t](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) för att hämta priserna i realtid. Min Express-server räknar ut och sparar nya priser när den är igång och när en användare ansluter till websocketservern skickas priserna ut i intervaller.
 
-Jag tittade på andra bibliotek som sköter websockets som socket.io men jag kände inte att jag behövde krångla till det ytterligare. Funktionaliteten är minimal och behöver inte något mer än chat-appens websocket-server/klient.
+Jag tittade på andra bibliotek som sköter websockets som socket.io men jag kände inte att jag behövde krångla till det ytterligare. Funktionaliteten är minimal och behöver inte något mer än chatt-appens websocket-server/klient.
 
 ## Frontend
 
-Jag valde att gå över från [Vue.js](https://vuejs.org/) i tidigare kursmoment till [React](https://reactjs.org/) inför projektet. Dels för att jag inte gillade Vue och dels för att jag var sugen på att testa något annat och se hur det känns. Jag gillade React skarpt och hade lätt att förstå sättet som man jobbar med det.
+Jag valde att gå över från [Vue.js](https://vuejs.org/) i tidigare kursmoment till [React](https://reactjs.org/) inför projektet. Dels för att jag ogillade Vue och även för att jag var sugen på att testa något annat och se hur det känns. React gillade jag skarpt och hade lätt att förstå sättet som man jobbar med det.
 
 För att visa upp priserna som hämtas i realtid använder jag mig av reactmodulen [react-chartjs-2](https://github.com/jerairrest/react-chartjs-2). Den jobbar bra tillsammans med websocket och har bra stöd för att uppdatera datan i realtid.
 
-För att få ett snyggt och tydligt utseende på webbappen använde jag mig av React-komponenten [Material ui](https://material-ui.com/) som är ett element- och stilAPI som implementearar Googles stilguide [Material Design](https://material.io/).
-
-Det gör att sidans kvalitet av utseende lyfter enormt mycket samt att sidan blir responsiv då Material-ui är designat Mobile first. Komponenterna som följer med material-ui är lätta att använda sig av och känns som om de vore en del av React.
+För att få ett snyggt och tydligt utseende på webbappen använde jag mig av React-komponenten [Material ui](https://material-ui.com/) som är ett element- och stilAPI som implementearar Googles stilguide [Material Design](https://material.io/). Det gör att sidans kvalitet av utseende lyfter enormt mycket samt att sidan blir responsiv då Material-ui är designat Mobile first. Komponenterna som följer med material-ui är lätta att använda sig av och känns som om de vore en del av React.
 
 ## Testning
 
@@ -59,7 +57,7 @@ För att visa upp kodtäckning genererar jag kodtäckningsfiler med [istanbul](h
 
 Något som inte täcks av mina kodtester är realtidsgenereringen av priser samt websockets som skickar ut priserna.
 
-Det var väldigt krångligt att koppla upp sig till websocket-servern i testmiljön och gav inga bra resultat. Jag valde att lägga tid på testningen av API:et istället.
+Det var väldigt krångligt att koppla upp sig till websocket-servern i testmiljön och gav inga bra resultat. Istället valde jag att lägga tid på testningen av API:et.
 
 Vissa felmeddelanden är omständiga att skapa i mina routes. Till exempel i mina anrop till databasen kollar jag efter ifall anslutningen till databasen inte fungerar eller om databasfrågan falerar på något sätt. För att skapa det i en testmiljö tror jag att det krävs att jag kopplar från databasen mellan varje test.
 
